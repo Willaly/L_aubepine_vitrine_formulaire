@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice">
+<rect width="600" height="600" fill="#E7DCC8"/>
+<g opacity="0.08" fill="#274539"><g transform="translate(486,470) scale(2.6)">
+<circle cx="0" cy="-16" r="13"/><circle cx="13" cy="-6" r="13"/><circle cx="8" cy="11" r="13"/><circle cx="-8" cy="11" r="13"/><circle cx="-13" cy="-6" r="13"/>
+<circle cx="0" cy="0" r="6"/></g></g>
+<rect x="24" y="24" width="552" height="552" fill="none" stroke="#274539" stroke-opacity="0.32" stroke-width="1.5"/>
+<g fill="none" stroke="#274539" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="332" cy="224" r="46"/>
+<line x1="150" y1="312" x2="450" y2="312"/>
+<path d="M150,344 q22,-14 44,0 t44,0 t44,0 t44,0 t44,0 t44,0"/>
+<path d="M150,378 q22,-14 44,0 t44,0 t44,0 t44,0 t44,0 t44,0"/>
+<path d="M192,312 L166,312 L192,236 L218,312 Z"/>
+<line x1="192" y1="312" x2="192" y2="334"/>
+<path d="M242,312 L220,312 L242,256 L264,312 Z"/>
+</g></svg>

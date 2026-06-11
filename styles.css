@@ -242,3 +242,6 @@ p { line-height: 1.75; font-size: 16px; color: var(--text-l); text-wrap: pretty;
 /* Liens légaux du pied de page */
 .foot-bottom a { color: rgba(243,236,223,0.55); text-decoration: underline; transition: color .25s; }
 .foot-bottom a:hover { color: var(--gold-l); }
+
+/* Illustrations de marque (remplacent les zones photo) */
+.ph.illus::after { content: ""; }
