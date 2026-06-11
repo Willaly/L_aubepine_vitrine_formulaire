@@ -1,0 +1,15 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 96" font-family="&#39;Cormorant Garamond&#39;, Georgia, serif">
+  <g fill="none" stroke="#274539" stroke-width="1.8" transform="translate(8,24) scale(0.75)">
+    <circle cx="32" cy="18" r="7"></circle>
+    <circle cx="45" cy="28" r="7"></circle>
+    <circle cx="40" cy="44" r="7"></circle>
+    <circle cx="24" cy="44" r="7"></circle>
+    <circle cx="19" cy="28" r="7"></circle>
+    <circle cx="32" cy="32" r="3.2" fill="#274539" stroke="none"></circle>
+  </g>
+  <text x="66" y="50" font-size="38" font-weight="500" fill="#16271F">
+    <tspan font-style="italic" fill="#A8884A">L&#39;</tspan>Aubépine
+  </text>
+  <text x="68" y="70" font-family="&#39;Jost&#39;, sans-serif" font-size="9" letter-spacing="2.4" fill="#A8884A">CONCIERGERIE · MÉDOC</text>
+</svg>

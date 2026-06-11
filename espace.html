@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Réserver & espace propriétaire · L'Aubépine Conciergerie</title>
+<meta name="description" content="Réservez vos prestations en ligne et suivez la gestion de votre bien : clés, ménage, transport et circuits. L'Aubépine, conciergerie du Médoc." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link rel="icon" href="logo/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  /* ---- champs (alignés sur contact.html) ---- */
+  .field { margin-bottom:22px; }
+  .field label { display:block; font-family:var(--sans); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-d); margin-bottom:9px; }
+  .field input, .field select, .field textarea {
+    width:100%; font-family:var(--sans); font-weight:300; font-size:15px; color:var(--ink);
+    background:var(--soft); border:1px solid var(--line-l); padding:13px 15px; outline:none;
+    transition:border-color .25s; border-radius:0;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color:var(--gold); }
+  .field textarea { resize:vertical; min-height:90px; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+
+  .panel { border:1px solid var(--line-l); background:var(--soft); padding:clamp(30px,4vw,56px); }
+
+  /* ---- stepper ---- */
+  .stepper { display:flex; gap:0; border:1px solid var(--line-l); margin-bottom:40px; }
+  .step { flex:1; text-align:center; padding:18px 8px; font-family:var(--sans); font-size:11px;
+    letter-spacing:0.18em; text-transform:uppercase; color:var(--text-l); border-right:1px solid var(--line-l); }
+  .step:last-child { border-right:0; }
+  .step .n { font-family:var(--serif); font-style:italic; font-size:22px; display:block; color:var(--line-l); margin-bottom:4px; line-height:1; }
+  .step.active { color:var(--ink); }
+  .step.active .n { color:var(--gold-d); }
+  .step.done .n { color:var(--gold-d); }
+
+  /* ---- sélection des services ---- */
+  .svc-pick { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .svc-opt { border:1px solid var(--line-l); padding:22px 24px; cursor:pointer; display:flex; align-items:flex-start; gap:14px;
+    transition:border-color .25s, background .25s; background:var(--soft); }
+  .svc-opt:hover { border-color:var(--gold); }
+  .svc-opt.sel { border-color:var(--gold); background:var(--cream); }
+  .svc-opt .box { width:16px; height:16px; border:1px solid var(--gold-d); flex:none; margin-top:5px; position:relative; transition:background .2s; }
+  .svc-opt.sel .box { background:var(--gold); }
+  .svc-opt h4 { font-family:var(--serif); font-weight:500; font-size:23px; margin:0 0 4px; line-height:1.1; }
+  .svc-opt p { font-size:13.5px; margin:0; line-height:1.5; }
+  .svc-opt .pr { margin-left:auto; font-family:var(--serif); font-style:italic; font-size:21px; color:var(--gold-d); white-space:nowrap; padding-left:12px; }
+
+  /* ---- récapitulatif ---- */
+  .recap { border:1px solid var(--line-l); }
+  .recap .line { display:flex; justify-content:space-between; gap:16px; padding:14px 22px; border-bottom:1px solid var(--line-l); font-size:15px; color:var(--text-l); }
+  .recap .line span:last-child { color:var(--ink); }
+  .recap .line.tot { border-bottom:0; background:var(--cream); }
+  .recap .line.tot span { font-family:var(--serif); font-size:26px; color:var(--ink); }
+
+  .step-actions { display:flex; justify-content:space-between; gap:14px; margin-top:30px; }
+  .hidden { display:none; }
+
+  .note { border-left:2px solid var(--gold); padding:14px 20px; font-size:13.5px; color:var(--text-l);
+    font-style:italic; font-family:var(--serif); background:var(--cream); margin:20px 0; }
+
+  /* ---- modal paiement ---- */
+  .modal-bg { position:fixed; inset:0; background:rgba(22,39,31,0.72); display:none; align-items:center; justify-content:center; z-index:200; padding:24px; }
+  .modal-bg.show { display:flex; }
+  .modal { background:var(--soft); border:1px solid var(--gold); max-width:440px; width:100%; padding:clamp(30px,4vw,44px); text-align:center; }
+  .modal h3 { font-family:var(--serif); font-weight:500; font-size:32px; margin:0 0 6px; }
+  .pay-card { background:var(--ink); color:var(--cream); padding:24px; margin:22px 0; text-align:left; border:1px solid var(--line-d); }
+  .pay-card .lab { font-family:var(--sans); font-size:10px; letter-spacing:0.24em; text-transform:uppercase; color:var(--gold); }
+  .pay-card .num { font-family:'Courier New',monospace; font-size:19px; letter-spacing:3px; margin:14px 0; }
+  .pay-card .ln { display:flex; justify-content:space-between; font-size:13px; color:var(--text-d); }
+
+  /* ---- espace propriétaire ---- */
+  .gate { text-align:center; max-width:440px; margin:0 auto; }
+  .dash { display:none; }
+  .dash.show { display:block; }
+  .dash-head { display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:14px; margin-bottom:8px; }
+  .dash-tabs { display:flex; gap:0; border-bottom:1px solid var(--line-l); margin:24px 0 34px; flex-wrap:wrap; }
+  .dash-tab { padding:14px 24px; cursor:pointer; font-family:var(--sans); font-size:11px; letter-spacing:0.16em;
+    text-transform:uppercase; color:var(--text-l); border-bottom:2px solid transparent; margin-bottom:-1px; transition:color .25s; }
+  .dash-tab.active { color:var(--ink); border-color:var(--gold); }
+  .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid var(--line-l); margin-bottom:36px; }
+  .kpi { padding:26px 24px; border-right:1px solid var(--line-l); }
+  .kpi:last-child { border-right:0; }
+  .kpi b { font-family:var(--serif); font-weight:500; font-size:40px; display:block; line-height:1; }
+  .kpi span { font-family:var(--sans); font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-d); }
+  table { width:100%; border-collapse:collapse; border:1px solid var(--line-l); }
+  th { background:var(--ink); color:var(--cream); text-align:left; padding:14px 18px; font-family:var(--sans);
+    font-weight:500; font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; }
+  td { padding:15px 18px; border-bottom:1px solid var(--line-l); font-size:14.5px; color:var(--text-l); }
+  td .ref { font-family:var(--serif); font-style:italic; font-size:17px; color:var(--ink); }
+  tr:last-child td { border-bottom:0; }
+  .tag { display:inline-block; padding:4px 12px; border:1px solid; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; font-family:var(--sans); }
+  .tag.ok { color:var(--pine); border-color:var(--pine); }
+  .tag.wait { color:var(--gold-d); border-color:var(--gold-d); }
+  .tag.run { color:#3d6a86; border-color:#3d6a86; }
+
+  @media (max-width:880px){
+    .svc-pick, .row2 { grid-template-columns:1fr; }
+    .kpis { grid-template-columns:1fr 1fr; }
+    .kpi:nth-child(2n){ border-right:0; }
+    table, thead, tbody, th, td, tr { display:block; }
+    th { display:none; }
+    td { border-bottom:0; }
+    tr { border-bottom:1px solid var(--line-l); padding:8px 0; }
+    tr:last-child { border-bottom:0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="head-inner">
+    <a class="brand-lockup" href="index.html" aria-label="L'Aubépine, accueil">
+      <svg class="mark" viewBox="0 0 64 64" fill="none" stroke="#C2A062" stroke-width="1.8"><circle cx="32" cy="18" r="7"/><circle cx="45" cy="28" r="7"/><circle cx="40" cy="44" r="7"/><circle cx="24" cy="44" r="7"/><circle cx="19" cy="28" r="7"/><circle cx="32" cy="32" r="3.2" fill="#C2A062" stroke="none"/></svg>
+      <span><span class="brand-name"><span class="art">L'</span>Aubépine</span><span class="brand-sub" style="display:block">Conciergerie · Médoc</span></span>
+    </a>
+    <nav class="nav">
+      <a href="services.html">Services</a>
+      <a href="circuits.html">Circuits</a>
+      <a href="proprietaires.html">Propriétaires</a>
+      <a href="a-propos.html">À propos</a>
+      <a class="active" href="espace.html">Réserver</a>
+      <a class="btn" href="contact.html">Demander un devis</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="dark center" style="padding:clamp(140px,20vh,200px) 0 clamp(56px,7vw,90px);">
+  <div class="wrap" style="max-width:780px;">
+    <p class="eyebrow">Espace client · Réservation</p>
+    <h1 class="display" style="font-size:clamp(38px,5.5vw,66px); margin:20px 0 0; color:var(--cream);">Réserver & suivre votre bien</h1>
+    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
+    <p class="lead" style="max-width:580px; margin:0 auto;">Composez vos prestations en quelques clics, puis retrouvez le suivi de votre bien dans votre espace propriétaire.</p>
+  </div>
+</section>
+
+<!-- ====================== RÉSERVATION ====================== -->
+<section class="section soft" style="padding-top:clamp(56px,7vw,90px);">
+  <div class="wrap" style="max-width:880px;">
+    <p class="eyebrow center">Réserver une prestation</p>
+    <h2 class="display center" style="font-size:clamp(30px,4.2vw,52px); margin:14px 0 0;">En trois temps</h2>
+    <hr class="rule" style="margin:26px auto 50px;" />
+
+    <div class="panel">
+      <div class="stepper">
+        <div class="step active" id="st1"><span class="n">I</span>Vos prestations</div>
+        <div class="step" id="st2"><span class="n">II</span>Votre bien</div>
+        <div class="step" id="st3"><span class="n">III</span>Confirmation</div>
+      </div>
+
+      <!-- STEP 1 -->
+      <div id="step1">
+        <div class="svc-pick">
+          <div class="svc-opt" data-svc="cles" data-price="35" onclick="toggleSvc(this)">
+            <span class="box"></span><div><h4>Clés & accueil</h4><p>Entrée / sortie des voyageurs, état des lieux.</p></div><span class="pr">35 €</span>
+          </div>
+          <div class="svc-opt" data-svc="menage" data-price="75" onclick="toggleSvc(this)">
+            <span class="box"></span><div><h4>Ménage hôtelier</h4><p>Nettoyage, linge frais & réassort.</p></div><span class="pr">75 €</span>
+          </div>
+          <div class="svc-opt" data-svc="transport" data-price="60" onclick="toggleSvc(this)">
+            <span class="box"></span><div><h4>Navette VTC</h4><p>Aéroport ou gare ⇄ logement, aller simple.</p></div><span class="pr">60 €</span>
+          </div>
+          <div class="svc-opt" data-svc="circuit" data-price="180" onclick="toggleSvc(this)">
+            <span class="box"></span><div><h4>Circuit journée</h4><p>Œnotourisme, océan ou Bordeaux.</p></div><span class="pr">180 €</span>
+          </div>
+        </div>
+        <div class="step-actions">
+          <span></span>
+          <button class="btn" onclick="toStep(2)">Continuer</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div id="step2" class="hidden">
+        <div class="row2">
+          <div class="field"><label>Prénom & nom</label><input id="f_name" placeholder="Marie Dupont" /></div>
+          <div class="field"><label>E-mail</label><input id="f_email" type="email" placeholder="marie@exemple.fr" /></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Commune du bien</label>
+            <select id="f_zone"><option>Lacanau-Océan</option><option>Carcans-Maubuisson</option><option>Hourtin</option><option>Le Porge</option><option>Soulac</option><option>Saint-Aubin-de-Médoc</option><option>Autre</option></select>
+          </div>
+          <div class="field"><label>Type de bien</label>
+            <select id="f_type"><option>Appartement</option><option>Maison / villa</option><option>Mobil-home en camping</option><option>Location Airbnb</option></select>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Arrivée</label><input id="f_in" type="date" /></div>
+          <div class="field"><label>Départ</label><input id="f_out" type="date" /></div>
+        </div>
+        <div class="field"><label>Précisions</label><textarea id="f_note" placeholder="N° d'emplacement, demandes particulières…"></textarea></div>
+        <div class="step-actions">
+          <button class="btn-ghost btn" onclick="toStep(1)">Retour</button>
+          <button class="btn" onclick="toStep(3)">Voir le récapitulatif</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div id="step3" class="hidden">
+        <div class="recap" id="recapBox"></div>
+        <div class="note">Démonstration, aucun paiement réel n'est effectué. En production, cette étape ouvrira un paiement sécurisé (Stripe).</div>
+        <div class="step-actions">
+          <button class="btn-ghost btn" onclick="toStep(2)">Modifier</button>
+          <button class="btn" onclick="openPay()">Confirmer & payer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== ESPACE PROPRIÉTAIRE ====================== -->
+<section class="section cream">
+  <div class="wrap">
+    <p class="eyebrow center">Espace propriétaire</p>
+    <h2 class="display center" style="font-size:clamp(30px,4.2vw,52px); margin:14px 0 0;">Le suivi de votre bien</h2>
+    <hr class="rule" style="margin:26px auto 50px;" />
+
+    <!-- accès démo -->
+    <div class="gate panel" id="gate">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--gold-d)" stroke-width="1.8" style="width:44px;height:44px;margin:0 auto 18px;"><circle cx="32" cy="18" r="7"/><circle cx="45" cy="28" r="7"/><circle cx="40" cy="44" r="7"/><circle cx="24" cy="44" r="7"/><circle cx="19" cy="28" r="7"/><circle cx="32" cy="32" r="3.2" fill="var(--gold-d)" stroke="none"/></svg>
+      <h3 class="display" style="font-size:28px; margin:0 0 8px;">Votre espace personnel</h3>
+      <p style="margin:0 auto 24px; max-width:360px;">Suivez vos prestations, vos biens et votre facturation en un seul endroit.</p>
+      <div class="field" style="text-align:left;"><label>E-mail</label><input id="g_email" placeholder="vous@exemple.fr" /></div>
+      <div class="field" style="text-align:left;"><label>Mot de passe</label><input id="g_pass" type="password" placeholder="••••••••" /></div>
+      <button class="btn" style="width:100%; justify-content:center;" onclick="enterDash()">Accéder à l'espace (démo)</button>
+      <p style="font-size:12px; margin-top:16px; color:var(--text-l);">Démo, cliquez pour entrer, aucune authentification réelle.</p>
+    </div>
+
+    <!-- tableau de bord -->
+    <div class="dash" id="dash">
+      <div class="dash-head">
+        <div>
+          <p class="eyebrow" style="margin:0;">Bienvenue</p>
+          <h3 class="display" style="font-size:30px; margin:6px 0 0;">Tableau de bord</h3>
+        </div>
+        <button class="btn-ghost btn" onclick="leaveDash()">Se déconnecter</button>
+      </div>
+      <div class="dash-tabs">
+        <div class="dash-tab active" data-t="planning" onclick="setTab('planning')">Planning</div>
+        <div class="dash-tab" data-t="demande" onclick="setTab('demande')">Nouvelle demande</div>
+        <div class="dash-tab" data-t="biens" onclick="setTab('biens')">Mes biens</div>
+        <div class="dash-tab" data-t="factu" onclick="setTab('factu')">Facturation</div>
+      </div>
+      <div id="dashBody"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== FOOTER ====================== -->
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand-lockup" href="index.html" style="margin-bottom:20px;">
+          <svg class="mark" viewBox="0 0 64 64" fill="none" stroke="#C2A062" stroke-width="1.8"><circle cx="32" cy="18" r="7"/><circle cx="45" cy="28" r="7"/><circle cx="40" cy="44" r="7"/><circle cx="24" cy="44" r="7"/><circle cx="19" cy="28" r="7"/><circle cx="32" cy="32" r="3.2" fill="#C2A062" stroke="none"/></svg>
+          <span><span class="brand-name"><span class="art">L'</span>Aubépine</span><span class="brand-sub" style="display:block">Conciergerie · Médoc</span></span>
+        </a>
+        <p style="max-width:340px; font-size:14px;">Conciergerie de charme & transport privé, au service des propriétaires et des voyageurs du Médoc.</p>
+      </div>
+      <div>
+        <h4>Naviguer</h4>
+        <ul>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="circuits.html">Circuits & séjours</a></li>
+          <li><a href="proprietaires.html">Propriétaires</a></li>
+          <li><a href="espace.html">Réserver & espace</a></li>
+          <li><a href="contact.html">Contact & devis</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Nous joindre</h4>
+        <ul>
+          <li><a href="tel:+33600000000">06 00 00 00 00</a></li>
+          <li><a href="mailto:bonjour@laubepine-conciergerie.fr">bonjour@laubepine-conciergerie.fr</a></li>
+          <li>Saint-Aubin-de-Médoc (33)</li>
+          <li>Médoc · Bordeaux · Bassin</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span data-year>2026</span> L'Aubépine · Conciergerie</span>
+      <span>VTC agréé · <a href="mentions-legales.html">Mentions légales</a> · <a href="cgv.html">CGV</a> · <a href="confidentialite.html">Confidentialité</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL PAIEMENT -->
+<div class="modal-bg" id="payModal"><div class="modal" id="payInner"></div></div>
+
+<script src="site.js"></script>
+<script>
+const PRICES={cles:35,menage:75,transport:60,circuit:180};
+const LABELS={cles:"Clés & accueil",menage:"Ménage hôtelier",transport:"Navette VTC",circuit:"Circuit journée"};
+const state={svc:[],total:0};
+
+/* ---- réservation ---- */
+function toggleSvc(el){
+  const k=el.dataset.svc; el.classList.toggle('sel');
+  if(state.svc.includes(k)) state.svc=state.svc.filter(x=>x!==k); else state.svc.push(k);
+}
+function toStep(n){
+  if(n===2 && state.svc.length===0){alert("Sélectionnez au moins une prestation.");return;}
+  [1,2,3].forEach(i=>{
+    document.getElementById('step'+i).classList.toggle('hidden',i!==n);
+    const s=document.getElementById('st'+i);
+    s.classList.toggle('active',i===n); s.classList.toggle('done',i<n);
+  });
+  if(n===3) buildRecap();
+  document.getElementById('st1').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function buildRecap(){
+  let total=0,rows='';
+  state.svc.forEach(k=>{total+=PRICES[k];rows+=`<div class="line"><span>${LABELS[k]}</span><span>${PRICES[k]} €</span></div>`;});
+  const name=document.getElementById('f_name').value||'…';
+  rows=`<div class="line"><span>Client</span><span>${name}</span></div>
+        <div class="line"><span>Bien</span><span>${document.getElementById('f_type').value} · ${document.getElementById('f_zone').value}</span></div>
+        <div class="line"><span>Séjour</span><span>${document.getElementById('f_in').value||'…'} → ${document.getElementById('f_out').value||'…'}</span></div>`+rows;
+  rows+=`<div class="line tot"><span>Total estimé</span><span>${total} €</span></div>`;
+  document.getElementById('recapBox').innerHTML=rows; state.total=total;
+}
+
+/* ---- paiement simulé ---- */
+function openPay(){
+  document.getElementById('payInner').innerHTML=`
+    <p class="eyebrow">Paiement sécurisé · démonstration</p>
+    <h3 class="display" style="margin-top:10px;">${state.total} €</h3>
+    <div class="pay-card">
+      <span class="lab">Carte bancaire</span>
+      <div class="num">4242 4242 4242 4242</div>
+      <div class="ln"><span>12 / 28</span><span>CVC 123</span></div>
+    </div>
+    <button class="btn" style="width:100%; justify-content:center;" onclick="payDone()">Payer ${state.total} €</button>
+    <button class="btn-ghost btn" style="width:100%; justify-content:center; margin-top:12px;" onclick="closeModal('payModal')">Annuler</button>`;
+  document.getElementById('payModal').classList.add('show');
+}
+function payDone(){
+  const ref='AUB-'+Math.floor(Math.random()*9000+1000);
+  const d=loadData();
+  d.requests.unshift({ref,svc:state.svc.map(k=>LABELS[k]).join(', '),zone:document.getElementById('f_zone').value,date:document.getElementById('f_in').value||'à définir',total:state.total,status:'wait'});
+  store(d);
+  document.getElementById('payInner').innerHTML=`
+    <svg viewBox="0 0 64 64" fill="none" stroke="var(--gold-d)" stroke-width="1.8" style="width:48px;height:48px;margin:0 auto 16px;"><circle cx="32" cy="18" r="7"/><circle cx="45" cy="28" r="7"/><circle cx="40" cy="44" r="7"/><circle cx="24" cy="44" r="7"/><circle cx="19" cy="28" r="7"/><circle cx="32" cy="32" r="3.2" fill="var(--gold-d)" stroke="none"/></svg>
+    <h3 class="display" style="margin:0 0 8px;">Demande confirmée</h3>
+    <p style="margin:0 auto 22px; max-width:320px;">Référence <strong>${ref}</strong>. Un récapitulatif vous est envoyé (simulation). Retrouvez-la dans votre espace.</p>
+    <button class="btn" style="width:100%; justify-content:center;" onclick="closeModal('payModal');enterDash();document.getElementById('dash').scrollIntoView({behavior:'smooth'});">Voir mon espace</button>`;
+}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+document.getElementById('payModal').addEventListener('click',e=>{if(e.target.id==='payModal')closeModal('payModal');});
+
+/* ---- données démo (localStorage) ---- */
+function seed(){return {requests:[
+  {ref:'AUB-2041',svc:'Ménage hôtelier, Clés & accueil',zone:'Lacanau-Océan',date:'2026-07-12',total:110,status:'ok'},
+  {ref:'AUB-2038',svc:'Navette VTC',zone:'Hourtin',date:'2026-07-09',total:60,status:'run'},
+  {ref:'AUB-2035',svc:'Circuit journée',zone:'Carcans-Maubuisson',date:'2026-07-05',total:180,status:'wait'}
+], biens:[
+  {nom:'Villa Les Pins',zone:'Lacanau-Océan',type:'Maison · 6 pers.',forfait:'La Sérénité'},
+  {nom:'Appart. Vue Lac',zone:'Hourtin',type:'Appartement T2',forfait:"L'Essentiel"}
+]};}
+function loadData(){try{const d=JSON.parse(localStorage.getItem('laubepine_data'));return d&&d.requests?d:seed();}catch(e){return seed();}}
+function store(d){try{localStorage.setItem('laubepine_data',JSON.stringify(d));}catch(e){}}
+
+/* ---- espace propriétaire ---- */
+let proTab='planning';
+function enterDash(){document.getElementById('gate').style.display='none';document.getElementById('dash').classList.add('show');renderDash();}
+function leaveDash(){document.getElementById('dash').classList.remove('show');document.getElementById('gate').style.display='block';}
+function setTab(t){proTab=t;document.querySelectorAll('.dash-tab').forEach(x=>x.classList.toggle('active',x.dataset.t===t));renderDash();}
+function renderDash(){
+  const d=loadData(); const pill={ok:'Terminé',wait:'En attente',run:'En cours'};
+  const total=d.requests.reduce((s,r)=>s+r.total,0);
+  const enAttente=d.requests.filter(r=>r.status==='wait').length;
+  let body='';
+  if(proTab==='planning'){
+    const rows=d.requests.map(r=>`<tr><td><span class="ref">${r.ref}</span></td><td>${r.svc}</td><td>${r.zone}</td><td>${r.date}</td><td>${r.total} €</td><td><span class="tag ${r.status}">${pill[r.status]}</span></td></tr>`).join('');
+    body=`<div class="kpis">
+      <div class="kpi"><b>${d.requests.length}</b><span>Demandes</span></div>
+      <div class="kpi"><b>${enAttente}</b><span>En attente</span></div>
+      <div class="kpi"><b>${d.biens.length}</b><span>Biens gérés</span></div>
+      <div class="kpi"><b>${total} €</b><span>Volume saison</span></div></div>
+      <table><tr><th>Réf.</th><th>Prestation</th><th>Commune</th><th>Date</th><th>Montant</th><th>Statut</th></tr>${rows}</table>`;
+  } else if(proTab==='demande'){
+    body=`<p style="margin-bottom:22px;">Créez une demande de prestation pour l'un de vos biens.</p>
+      <div class="row2">
+        <div class="field"><label>Prestation</label><select id="nd_svc"><option value="Clés & accueil">Clés & accueil · 35 €</option><option value="Ménage hôtelier">Ménage hôtelier · 75 €</option><option value="Navette VTC">Navette VTC · 60 €</option><option value="Circuit journée">Circuit journée · 180 €</option></select></div>
+        <div class="field"><label>Date</label><input id="nd_date" type="date" /></div>
+      </div>
+      <button class="btn" onclick="addDemande()">Ajouter la demande</button>`;
+  } else if(proTab==='biens'){
+    const rows=d.biens.map(b=>`<tr><td><span class="ref">${b.nom}</span></td><td>${b.zone}</td><td>${b.type}</td><td><span class="tag ok">${b.forfait}</span></td></tr>`).join('');
+    body=`<table><tr><th>Bien</th><th>Commune</th><th>Type</th><th>Forfait</th></tr>${rows}</table>`;
+  } else {
+    body=`<table><tr><th>Période</th><th>Prestations</th><th>Montant</th><th>Statut</th></tr>
+      <tr><td>Juillet 2026</td><td>${d.requests.length} prestations</td><td>${total} €</td><td><span class="tag wait">À régler</span></td></tr>
+      <tr><td>Juin 2026</td><td>5 prestations</td><td>420 €</td><td><span class="tag ok">Payée</span></td></tr></table>`;
+  }
+  document.getElementById('dashBody').innerHTML=body;
+}
+const NDP={'Clés & accueil':35,'Ménage hôtelier':75,'Navette VTC':60,'Circuit journée':180};
+function addDemande(){
+  const svc=document.getElementById('nd_svc').value;
+  const date=document.getElementById('nd_date').value||'à définir';
+  const d=loadData(); const ref='AUB-'+Math.floor(Math.random()*9000+1000);
+  d.requests.unshift({ref,svc,zone:d.biens[0]?d.biens[0].zone:'…',date,total:NDP[svc]||0,status:'wait'});
+  store(d); proTab='planning'; document.querySelectorAll('.dash-tab').forEach(x=>x.classList.toggle('active',x.dataset.t==='planning')); renderDash();
+}
+</script>
+</body>
+</html>

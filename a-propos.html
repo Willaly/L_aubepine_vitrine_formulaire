@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>À propos · L'Aubépine Conciergerie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link rel="icon" href="logo/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .prose p { font-size:17px; margin:0 0 22px; }
+  .prose .drop::first-letter { font-family:var(--serif); font-size:64px; float:left; line-height:0.8; padding:8px 14px 0 0; color:var(--gold-d); }
+  .vals { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border-top:1px solid var(--line-l); border-left:1px solid var(--line-l); }
+  .val { padding:40px 34px; border-right:1px solid var(--line-l); border-bottom:1px solid var(--line-l); }
+  .val h3 { font-family:var(--serif); font-weight:500; font-size:26px; margin:14px 0 10px; }
+  .val p { font-size:14px; }
+  @media (max-width:880px){ .vals{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="head-inner">
+    <a class="brand-lockup" href="index.html" aria-label="L'Aubépine, accueil">
+      <svg class="mark" viewBox="0 0 64 64" fill="none" stroke="#C2A062" stroke-width="1.8"><circle cx="32" cy="18" r="7"/><circle cx="45" cy="28" r="7"/><circle cx="40" cy="44" r="7"/><circle cx="24" cy="44" r="7"/><circle cx="19" cy="28" r="7"/><circle cx="32" cy="32" r="3.2" fill="#C2A062" stroke="none"/></svg>
+      <span><span class="brand-name"><span class="art">L'</span>Aubépine</span><span class="brand-sub" style="display:block">Conciergerie · Médoc</span></span>
+    </a>
+    <nav class="nav">
+      <a href="services.html">Services</a>
+      <a href="circuits.html">Circuits</a>
+      <a href="proprietaires.html">Propriétaires</a>
+      <a href="a-propos.html" class="active">À propos</a>
+      <a class="btn" href="contact.html">Demander un devis</a>
+    </nav>
+  </div>
+</header>
+
+<section class="dark center" style="padding:clamp(140px,20vh,200px) 0 clamp(72px,9vw,110px);" data-screen-label="À propos hero">
+  <div class="wrap" style="max-width:820px;">
+    <p class="eyebrow">Notre histoire</p>
+    <h1 class="display" style="font-size:clamp(40px,6vw,72px); margin:20px 0 0; color:var(--cream);">Née à Saint-Aubin,<br/>au plus près de vous</h1>
+    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
+    <p class="lead" style="max-width:600px; margin:0 auto;">L'Aubépine est une histoire de territoire : celle d'un enfant du Médoc qui a fait de l'accueil un métier.</p>
+  </div>
+</section>
+
+<!-- Récit -->
+<section class="section soft">
+  <div class="wrap" style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;">
+    <div class="ph light" data-label="Portrait · le fondateur, devant une demeure médocaine" style="aspect-ratio:4/5;"></div>
+    <div class="prose">
+      <p class="drop">Tout commence par une route que je connais par cœur. Celle qui relie l'aéroport de Bordeaux aux pins de Saint-Aubin-de-Médoc, que j'emprunte chaque jour comme chauffeur. À force d'accueillir des voyageurs, j'ai compris une chose simple : ce qui marque, ce n'est pas le trajet, c'est l'attention.</p>
+      <p>De cette conviction est née L'Aubépine : une conciergerie qui prolonge l'accueil bien au-delà de la voiture. Gérer les clés, tenir les maisons, recevoir les voyageurs, composer leurs séjours, pour que les propriétaires retrouvent la sérénité, et que chaque invité se sente attendu.</p>
+      <p>Pour tenir ce niveau d'exigence, je m'appuie sur une équipe de confiance : un partenaire dédié au ménage et à la remise des clés, et moi-même au transport et à l'orchestration. Une structure légère, humaine, profondément locale.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Le nom -->
+<section class="section cream center">
+  <div class="wrap" style="max-width:760px;">
+    <svg viewBox="0 0 64 64" fill="none" stroke="var(--gold)" stroke-width="1.6" style="width:46px; height:46px; margin:0 auto 24px;">
+      <circle cx="32" cy="18" r="7"/><circle cx="45" cy="28" r="7"/><circle cx="40" cy="44" r="7"/><circle cx="24" cy="44" r="7"/><circle cx="19" cy="28" r="7"/><circle cx="32" cy="32" r="3.2" fill="var(--gold)" stroke="none"/>
+    </svg>
+    <p class="eyebrow">Pourquoi « L'Aubépine »</p>
+    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
+    <p class="display" style="font-size:clamp(24px,3.2vw,36px); font-weight:400;">L'aubépine est cette fleur blanche, simple et tenace, des bocages d'Aquitaine. Discrète mais protectrice, exactement ce qu'une conciergerie doit être. Et puis, elle partage ses premières lettres avec <em style="font-style:italic; color:var(--gold-d);">Aubin</em>.</p>
+  </div>
+</section>
+
+<!-- Valeurs -->
+<section class="section soft">
+  <div class="wrap center" style="margin-bottom:48px;">
+    <p class="eyebrow">Ce qui nous tient</p>
+    <h2 class="display" style="font-size:clamp(30px,4.2vw,48px); margin-top:16px;">Trois principes, jamais négociés</h2>
+  </div>
+  <div class="wrap">
+    <div class="vals">
+      <div class="val"><span class="kicker-num">i</span><h3>Le soin du détail</h3><p>Le mot laissé sur la table, le linge parfaitement plié, l'heure respectée. Le luxe est dans les petites choses.</p></div>
+      <div class="val"><span class="kicker-num">ii</span><h3>La proximité</h3><p>Nous vivons ici. Nous connaissons les routes, les domaines, les artisans. Une vraie présence, joignable et fiable.</p></div>
+      <div class="val"><span class="kicker-num">iii</span><h3>La discrétion</h3><p>Chez vous, chez vos voyageurs, nous agissons sans nous imposer. La confiance se mérite, en silence.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section pine center">
+  <div class="wrap" style="max-width:720px;">
+    <p class="eyebrow" style="color:var(--gold-l);">Faisons connaissance</p>
+    <h2 class="display" style="font-size:clamp(32px,4.6vw,54px); margin:18px 0 0; color:var(--cream);">Confiez-nous votre adresse</h2>
+    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
+    <p style="max-width:520px; margin:0 auto 36px;">Un café, une visite, un appel. C'est souvent ainsi que tout commence.</p>
+    <a class="btn" href="contact.html">Nous contacter</a>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand-lockup" href="index.html" style="margin-bottom:20px;">
+          <svg class="mark" viewBox="0 0 64 64" fill="none" stroke="#C2A062" stroke-width="1.8"><circle cx="32" cy="18" r="7"/><circle cx="45" cy="28" r="7"/><circle cx="40" cy="44" r="7"/><circle cx="24" cy="44" r="7"/><circle cx="19" cy="28" r="7"/><circle cx="32" cy="32" r="3.2" fill="#C2A062" stroke="none"/></svg>
+          <span><span class="brand-name"><span class="art">L'</span>Aubépine</span><span class="brand-sub" style="display:block">Conciergerie · Médoc</span></span>
+        </a>
+        <p style="max-width:340px; font-size:14px;">Conciergerie de charme & transport privé, au service des propriétaires et des voyageurs du Médoc.</p>
+      </div>
+      <div>
+        <h4>Naviguer</h4>
+        <ul>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="circuits.html">Circuits & séjours</a></li>
+          <li><a href="proprietaires.html">Propriétaires</a></li>
+          <li><a href="a-propos.html">À propos</a></li>
+          <li><a href="contact.html">Contact & devis</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Nous joindre</h4>
+        <ul>
+          <li><a href="tel:+33600000000">06 00 00 00 00</a></li>
+          <li><a href="mailto:bonjour@laubepine-conciergerie.fr">bonjour@laubepine-conciergerie.fr</a></li>
+          <li>Saint-Aubin-de-Médoc (33)</li>
+          <li>Médoc · Bordeaux · Bassin</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span data-year>2026</span> L'Aubépine · Conciergerie</span>
+      <span>VTC agréé · <a href="mentions-legales.html">Mentions légales</a> · <a href="cgv.html">CGV</a> · <a href="confidentialite.html">Confidentialité</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+</body>
+</html>
